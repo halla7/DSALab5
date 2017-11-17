@@ -1,22 +1,20 @@
 /**
  * Created by halla7 on 11/15/2017.
  */
-public class MyArrayList implements MyList<Comparable> {
+public class MyArrayList implements MyList <Comparable> {
     //test
     private int count;
     private Comparable myItem;
     private Comparable[] array;
 
 
-    @SuppressWarnings("unchecked")
     public MyArrayList() {
-        array = (Comparable[]) new Comparable[10];
+        array = (Comparable[]) new Comparable[30];
         count = 0;
     }
-    @Override
     public boolean add(int index, Comparable t) {
         int i = index;
-        if (i < 1 || i > count) {
+        if (i < 0 || i > count+1) {
             throw new
                     IndexOutOfBoundsException(index + " < 0 or >= " + count);
         }
@@ -31,11 +29,9 @@ public class MyArrayList implements MyList<Comparable> {
         }
         return false;
     }
-    @SuppressWarnings("unchecked")
     public void doubleSize() {
-        array = (Comparable[]) new Object[array.length * 2];
+        array = (Comparable[]) new Comparable[array.length * 2];
     }
-    @Override
     public boolean add(Comparable t) {
         if(count == array.length) {
             doubleSize();
@@ -48,18 +44,15 @@ public class MyArrayList implements MyList<Comparable> {
     }
 
 
-    @Override
     public boolean clear() {
 
 
-        @SuppressWarnings("unchecked")
         Comparable[] empty = (Comparable[]) new Object[0];
         array = empty;
         return false;
     }
 
 
-    @Override
     public boolean contains(Comparable t) {
         boolean flag = false;
         for(int i = 0; i < array.length; i++) {
@@ -74,9 +67,8 @@ public class MyArrayList implements MyList<Comparable> {
     }
 
 
-    @Override
     public Comparable get(int index) {
-        if(index < 0 || index > count) {
+        if(index < 0 || index > count+1) {
             myItem = null;
             throw new
                     IndexOutOfBoundsException(index + " < 0 or >= " + count);
@@ -91,7 +83,6 @@ public class MyArrayList implements MyList<Comparable> {
     }
 
 
-    @Override
     public int indexOf(Comparable t) {
         int returnValue = 0;
         for(int i = 0; i < count; i++) {
@@ -107,7 +98,6 @@ public class MyArrayList implements MyList<Comparable> {
     }
 
 
-    @Override
     public boolean isEmpty() {
         boolean flag = false;
         if (count == 0) {
@@ -119,9 +109,8 @@ public class MyArrayList implements MyList<Comparable> {
     }
 
 
-    @Override
     public Comparable remove(int index) {
-        if (index < 0 || index > count) {
+        if (index < 0 || index > count+1) {
             throw new
                     IndexOutOfBoundsException(index + " < 0 or >= " + count);
         } else {
@@ -132,7 +121,6 @@ public class MyArrayList implements MyList<Comparable> {
     }
 
 
-    @Override
     public Comparable remove(Comparable o) {
         for(int i = 0; i < count; i++) {
             if(array[i].equals(o)) {
@@ -145,9 +133,8 @@ public class MyArrayList implements MyList<Comparable> {
     }
 
 
-    @Override
     public boolean set(int index, Comparable element) {
-        if(index < 1 || index > count) {
+        if(index < 1 || index > count+1) {
             throw new
                     IndexOutOfBoundsException(index + " < 0 or >= " + count);
         } else {
@@ -159,20 +146,18 @@ public class MyArrayList implements MyList<Comparable> {
     }
 
 
-    @Override
     public int size() {
         return count;
     }
 
 
-    @Override
     public MyList subList(int fromIndex, int toIndex) {
         MyArrayList newList = new MyArrayList();
-        if (fromIndex < 1 || fromIndex > count) {
+        if (fromIndex < 0 || fromIndex > count+1) {
             throw new
                     IndexOutOfBoundsException(fromIndex + " < 0 or >= " + count);
         }
-        if (toIndex < 1 || toIndex > count) {
+        if (toIndex < 0 || toIndex > count+1) {
             throw new
                     IndexOutOfBoundsException(toIndex + " < 0 or >= " + count);
         } else {
@@ -184,13 +169,11 @@ public class MyArrayList implements MyList<Comparable> {
     }
 
 
-    @Override
     public Comparable[] toArray() {
         return array;
     }
 
 
-    @Override
     public boolean swap(int position1, int position2) {
 //        if(position1 < 1 || position1 > array.length || position2 < 1 || position1 < array.length) {
 //            throw new
@@ -207,7 +190,6 @@ public class MyArrayList implements MyList<Comparable> {
 //    }
 
 
-    @Override
     public boolean shift(int positions) {
         Comparable[] temp = (Comparable[]) new Comparable[count];
         for(int i = 0; i < count; i++) {
@@ -235,30 +217,36 @@ public class MyArrayList implements MyList<Comparable> {
     }
 
     public boolean insertionSort(){
-        boolean flag=false;
-        int sorted=0;
-        Comparable mid,value;
+        int sorted=0,resort=0;
+        Comparable mid,ckvalue;
 
-        while (sorted<count) {
-            mid = array[sorted % 2];
-            System.out.print("Sorted is now = ");
-            for (int j=0; j<=sorted; j++){
-                System.out.print(array[j]+" ");
+        while (sorted<array.length-1 && array[sorted+1]!=null) {
+        	ckvalue=array[sorted+1];
+            //mid = array[sorted % 2];
+            for (int i=sorted; i>=0; i--) {
+            	if (ckvalue.compareTo(array[i]) < 0) {
+            		//System.out.println("Placing "+ckvalue+" in the correct spot");
+            		while (i>0 && ckvalue.compareTo(array[i-1]) < 0) {
+            			i--;
+            		}
+            		for (int j=i; j<=sorted+1; j++) {
+            			mid=array[j];
+            			array[j]=ckvalue;
+            			ckvalue=mid;
+            		}
+            		System.out.print("Sorted area is now: ");
+            		for (int k=0; k<=sorted; k++)
+            			System.out.print(array[k]+" ");
+            		System.out.println(".");
+//            		sorted=array.length;
+            		break;
+            	}else {
+//            		System.out.println("This value is in the right spot and will not be moved " + ckvalue);
+            	}
             }
-            System.out.println(":");
-            for (int i=sorted; i<count-sorted; i++) {
-                value = array[sorted+i];
-                System.out.println("Comparing " + mid + " to " + value);
-                //System.out.println("Equality is " + mid == value);
-            }
-            System.out.print("Unsorted is now = ");
-            for (int i=sorted+1; i<count-sorted; i++) {
-                System.out.print(array[i]+" ");
-            }
-            System.out.println(".");
             sorted++;
         }
 
-        return flag;
+        return true;
     }
 }
