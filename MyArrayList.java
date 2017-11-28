@@ -9,7 +9,7 @@ public class MyArrayList implements MyList <Comparable> {
 
 
     public MyArrayList() {
-        array = (Comparable[]) new Comparable[30];
+        array = (Comparable[]) new Comparable[300];
         count = 0;
     }
     public boolean add(int index, Comparable t) {
@@ -217,15 +217,15 @@ public class MyArrayList implements MyList <Comparable> {
     }
 
     public boolean insertionSort(){
-        int sorted=0,resort=0;
+        int sorted=0,min=0,max=0;
         Comparable mid,ckvalue;
 
         while (sorted<array.length-1 && array[sorted+1]!=null) {
         	ckvalue=array[sorted+1];
-            //mid = array[sorted % 2];
+//          mid = array[sorted % 2];
             for (int i=sorted; i>=0; i--) {
             	if (ckvalue.compareTo(array[i]) < 0) {
-            		//System.out.println("Placing "+ckvalue+" in the correct spot");
+//            		System.out.println("Placing "+ckvalue+" in the correct spot");
             		while (i>0 && ckvalue.compareTo(array[i-1]) < 0) {
             			i--;
             		}
@@ -234,19 +234,76 @@ public class MyArrayList implements MyList <Comparable> {
             			array[j]=ckvalue;
             			ckvalue=mid;
             		}
-            		System.out.print("Sorted area is now: ");
-            		for (int k=0; k<=sorted; k++)
-            			System.out.print(array[k]+" ");
-            		System.out.println(".");
+//           		System.out.print("Sorted area is now: ");
+//            		for (int k=0; k<=sorted; k++)
+//            			System.out.print(array[k]+" ");
+//           		System.out.println(".");
 //            		sorted=array.length;
             		break;
-            	}else {
-//            		System.out.println("This value is in the right spot and will not be moved " + ckvalue);
             	}
             }
             sorted++;
         }
 
         return true;
+    }
+    public boolean quickSort() {
+        int sorted=0,pivot=0,newpivot=0,storeindex=0;
+        Comparable swap,ckvalue;
+        
+
+    	System.out.print("Array to be sorted is now: ");
+		for (int k=0; k<array.length; k++)
+			System.out.print(array[k]+" ");
+		System.out.println(".");
+        
+        for (int i=0; i<array.length; i++) {
+        	pivot=i;
+        	ckvalue=array[pivot];
+        	storeindex=pivot+1;
+//			System.out.println("Pivot ="+ckvalue);
+        	for (int j=pivot+1; j<array.length; j++) {
+        		if (ckvalue.compareTo(array[j]) > 0) {
+//        			System.out.println("1:Need to swap "+array[storeindex]+" and "+array[j]);
+        			swap=array[storeindex];
+        			array[storeindex]=array[j];
+        			array[j]=swap;
+        			storeindex++;
+        		}
+        		
+        	}
+
+        	if (storeindex>0){
+        		swap=array[storeindex-1];
+        	    array[storeindex-1]=ckvalue;
+        	    array[pivot]=swap;
+        	}
+        	for (int k=0; k<=pivot; k++) {
+				newpivot=k;
+            	ckvalue=array[newpivot];
+            	storeindex=newpivot+1;
+//    			System.out.println("Pivot ="+ckvalue);
+            	for (int l=newpivot+1; l<=pivot; l++) {
+            		if (ckvalue.compareTo(array[l]) > 0) {
+//            			System.out.println("2:Need to swap "+array[storeindex]+" and "+array[l]);
+            			swap=array[storeindex];
+            			array[storeindex]=array[l];
+            			array[l]=swap;
+            			storeindex++;
+            		}
+        		}
+            	if (storeindex>0){
+            		swap=array[storeindex-1];
+            	    array[storeindex-1]=ckvalue;
+            	    array[newpivot]=swap;
+            	}
+        	}
+        	System.out.print("Sorted area is now: ");
+    		for (int k=0; k<=pivot; k++)
+    			System.out.print(array[k]+" ");
+    		System.out.println(".");
+        }
+    	
+    	return true;
     }
 }
